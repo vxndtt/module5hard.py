@@ -45,14 +45,13 @@ class UrTube:
     def log_out(self):
         return self.current_user is None
 
-    def add(self, *videos):
-        for video in videos:
-            for j in self.videos:
-                if j['name'] == video.name:
-                    break
-                else:
-                    self.videos.append({'name'})
-                return self.videos
+    def add(self, *video):
+        for video in self.videos:
+            if video == video.name:
+                break
+            else:
+                self.videos.append(Video)
+            return self.videos
 
     def get_videos(self, word):
         for title in self.videos:
@@ -61,13 +60,14 @@ class UrTube:
                 return self.videos
 
     def watch_video(self, title):
-        if title in self.videos:
-            if self.current_user not in self.users:
-                print(f'Войдите в аккаунт, чтобы смотреть видео.')
-            elif '18+' in title:
+        if self.current_user is None:
+            print('Войдите в аккаунт чтобы смотреть видео')
+        elif title in self.videos:
+            if '18+' in title and self.age < 18:
                 print('Вам нет 18 лет, пожалуйста покиньте страницу.')
             else:
                 print(f'Видео {title} воспроизводится')
+
 
 
 ur = UrTube()
