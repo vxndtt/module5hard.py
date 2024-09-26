@@ -30,7 +30,7 @@ class UrTube:
 
     def log_in(self, nickname, password):
         for user in self.users:
-            if user['nickname'] == nickname and user['password'] == password:
+            if user['nickname'] == self.current_user.nickname and user['password'] == self.current_user.password:
                 self.current_user = user
                 print(f'Вход выполнен, {nickname}')
                 return
@@ -45,25 +45,24 @@ class UrTube:
     def log_out(self):
         return self.current_user is None
 
-    def add(self, *video):
-        for video in self.videos:
-            if video == video.name:
-                break
-            else:
-                self.videos.append(Video)
-            return self.videos
+    def add(self, *new_videos):
+        for video in new_videos:
+            if not any(video.title == video.title for video in self.videos):
+                self.videos.append(video)
 
     def get_videos(self, word):
-        for title in self.videos:
-            if word in title.lower():
-                self.videos.append(title)
-                return self.videos
+        word = word.lower()
+        result = []
+        for video in self.videos:
+            if word in video.title.lower():
+                result.append(video)
+        return result
 
     def watch_video(self, title):
         if self.current_user is None:
             print('Войдите в аккаунт чтобы смотреть видео')
         elif title in self.videos:
-            if '18+' in title and self.age < 18:
+            if '18+' in title and self.current_user.age < 18:
                 print('Вам нет 18 лет, пожалуйста покиньте страницу.')
             else:
                 print(f'Видео {title} воспроизводится')
