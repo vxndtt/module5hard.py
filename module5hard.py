@@ -30,25 +30,28 @@ class UrTube:
 
     def log_in(self, nickname, password):
         for user in self.users:
-            if user['nickname'] == self.current_user.nickname and user['password'] == self.current_user.password:
+            if nickname == self.current_user.nickname and password == self.current_user.password:
                 self.current_user = user
                 print(f'Вход выполнен, {nickname}')
-                return
 
     def register(self, nickname, password, age):
-        if nickname not in self.users:
-            self.users.append(nickname)
-            print(f'Регистрация и вход выполнены, {nickname}')
-        else:
-            print(f'Пользователь {nickname} уже существует')
+        new_user = {'nickname': nickname, 'password': password, 'age': age}
+        for user in self.users:
+            if user.nickname not in self.users:
+                self.users.append(new_user)
+                self.current_user = user
+            else:
+                print(f'Пользователь {nickname} уже существует')
 
     def log_out(self):
         return self.current_user is None
 
     def add(self, *new_videos):
-        for video in new_videos:
-            if not any(video.title == video.title for video in self.videos):
-                self.videos.append(video)
+        for title in new_videos:
+            if title in self.videos:
+                break
+            else:
+                self.videos.append(title)
 
     def get_videos(self, word):
         word = word.lower()
@@ -60,12 +63,13 @@ class UrTube:
 
     def watch_video(self, title):
         if self.current_user is None:
-            print('Войдите в аккаунт чтобы смотреть видео')
+            print('Войдите в аккаунт, чтобы смотреть видео')
         elif title in self.videos:
-            if '18+' in title and self.current_user.age < 18:
+            if self.current_user.age < 18:
                 print('Вам нет 18 лет, пожалуйста покиньте страницу.')
             else:
                 print(f'Видео {title} воспроизводится')
+                #дополнение
 
 
 
