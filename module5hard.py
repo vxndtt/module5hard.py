@@ -4,7 +4,7 @@ import time
 class User:
     def __init__(self, nickname, password, age):
         self.nickname = str(nickname)
-        self.password = int(password)
+        self.password = password
         self.age = int(age)
 
     def __eq__(self, other):
@@ -30,18 +30,19 @@ class UrTube:
 
     def log_in(self, nickname, password):
         for user in self.users:
-            if nickname == self.current_user.nickname and password == self.current_user.password:
+            if nickname == user.nickname and password == user.password:
                 self.current_user = user
                 print(f'Вход выполнен, {nickname}')
 
     def register(self, nickname, password, age):
-        new_user = {'nickname': nickname, 'password': password, 'age': age}
+        new_user = User(nickname, password, age)
         for user in self.users:
-            if user.nickname not in self.users:
-                self.users.append(new_user)
-                self.current_user = user
+            if user.nickname == new_user.nickname:
+                print(f'Пользователь {user.nickname} уже существует')
+                return
             else:
-                print(f'Пользователь {nickname} уже существует')
+                self.users.append(new_user)
+                self.current_user = new_user
 
     def log_out(self):
         return self.current_user is None
@@ -64,13 +65,13 @@ class UrTube:
     def watch_video(self, title):
         if self.current_user is None:
             print('Войдите в аккаунт, чтобы смотреть видео')
-        elif title in self.videos:
-            if self.current_user.age < 18:
-                print('Вам нет 18 лет, пожалуйста покиньте страницу.')
-            else:
-                print(f'Видео {title} воспроизводится')
-                #дополнение
-
+            return
+        if self.current_user.age < 18:
+            print('Вам нет 18 лет, пожалуйста покиньте страницу.')
+            return
+        if title in self.videos:
+            print(f'Видео {title} воспроизводится')
+            return
 
 
 ur = UrTube()
