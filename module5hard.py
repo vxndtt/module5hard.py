@@ -21,6 +21,12 @@ class Video:
         self.time_now = int(time_now)
         self.adult_mode = bool(adult_mode)
 
+    def __str__(self):
+        return self.title
+
+    def __repr__(self):
+        return self.title
+
 
 class UrTube:
     def __init__(self):
@@ -45,7 +51,8 @@ class UrTube:
                 self.current_user = new_user
 
     def log_out(self):
-        return self.current_user is None
+        self.current_user = None
+        return self.current_user
 
     def add(self, *new_videos):
         for title in new_videos:
