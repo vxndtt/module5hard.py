@@ -2,10 +2,10 @@ import time
 
 
 class User:
-    def __init__(self, nickname, password, age):
-        self.nickname = str(nickname)
+    def __init__(self, nickname: str, password, age: int):
+        self.nickname = nickname
         self.password = password
-        self.age = int(age)
+        self.age = age
 
     def __eq__(self, other):
         return self.password == other.password
@@ -15,18 +15,17 @@ class User:
 
 
 class Video:
-    def __init__(self, title, duration, time_now = 0, adult_mode = False):
-        self.title = str(title)
-        self.duration = int(duration)
-        self.time_now = int(time_now)
-        self.adult_mode = bool(adult_mode)
+    def __init__(self, title: str, duration: int, time_now = 0, adult_mode = False):
+        self.title = title
+        self.duration = duration
+        self.time_now = time_now
+        self.adult_mode = adult_mode
 
     def __str__(self):
         return self.title
 
     def __repr__(self):
         return self.title
-
 
 class UrTube:
     def __init__(self):
@@ -42,13 +41,13 @@ class UrTube:
 
     def register(self, nickname, password, age):
         new_user = User(nickname, password, age)
-        for user in self.users:
-            if user.nickname == new_user.nickname:
-                print(f'Пользователь {user.nickname} уже существует')
-                return
-            else:
-                self.users.append(new_user)
-                self.current_user = new_user
+        if new_user not in self.users:
+            self.users.append(new_user)
+            self.current_user = new_user
+            print(f'Вход выполнен, {nickname}')
+        else:
+            print(f'Пользователь {nickname} уже существует')
+            return
 
     def log_out(self):
         self.current_user = None
@@ -56,10 +55,10 @@ class UrTube:
 
     def add(self, *new_videos):
         for title in new_videos:
-            if title in self.videos:
-                break
-            else:
+            if title not in self.videos:
                 self.videos.append(title)
+            else:
+                break
 
     def get_videos(self, word):
         word = word.lower()
@@ -73,12 +72,13 @@ class UrTube:
         if self.current_user is None:
             print('Войдите в аккаунт, чтобы смотреть видео')
             return
-        if self.current_user.age < 18:
+        if self.current_user.age < 18: #and adult_mode = True
             print('Вам нет 18 лет, пожалуйста покиньте страницу.')
             return
         if title in self.videos:
             print(f'Видео {title} воспроизводится')
             return
+            #дополнение
 
 
 ur = UrTube()
