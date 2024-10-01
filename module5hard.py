@@ -44,19 +44,17 @@ class UrTube:
         if new_user not in self.users:
             self.users.append(new_user)
             self.current_user = new_user
-            print(f'Вход выполнен, {nickname}')
         else:
             print(f'Пользователь {nickname} уже существует')
-            return
 
     def log_out(self):
         self.current_user = None
         return self.current_user
 
     def add(self, *new_videos):
-        for title in new_videos:
-            if title not in self.videos:
-                self.videos.append(title)
+        for video in new_videos:
+            if video not in self.videos:
+                self.videos.append(video)
             else:
                 break
 
@@ -72,13 +70,17 @@ class UrTube:
         if self.current_user is None:
             print('Войдите в аккаунт, чтобы смотреть видео')
             return
-        if self.current_user.age < 18: #and adult_mode = True
-            print('Вам нет 18 лет, пожалуйста покиньте страницу.')
-            return
-        if title in self.videos:
-            print(f'Видео {title} воспроизводится')
-            return
-            #дополнение
+        for video in self.videos:
+            if title == video.title:
+                if video.adult_mode == True and self.current_user.age < 18:
+                    print('Вам нет 18 лет, пожалуйста покиньте страницу.')
+                else:
+                    while video.time_now <= video.duration:
+                        print(f'{video.time_now}')
+                        time.sleep(1)
+                        video.time_now += 1
+                    print('Конец видео')
+
 
 
 ur = UrTube()
